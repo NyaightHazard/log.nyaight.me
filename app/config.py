@@ -25,12 +25,13 @@ ROOT_DIR = Path().parent.resolve()
 
 _CONFIG_FILE = os.getenv("MICROBLOGPUB_CONFIG_FILE", "profile.toml")
 
-VERSION_COMMIT = "dev"
+#!CUS overwrite version
+VERSION_COMMIT = "dev+nyt"
 
-try:
-    from app._version import VERSION_COMMIT  # type: ignore
-except ImportError:
-    VERSION_COMMIT = get_version_commit()
+# try:
+#     from app._version import VERSION_COMMIT  # type: ignore
+# except ImportError:
+#     VERSION_COMMIT = get_version_commit()
 
 # Force reloading cache when the CSS is updated
 CSS_HASH = "none"
