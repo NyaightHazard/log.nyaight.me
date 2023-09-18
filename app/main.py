@@ -1305,13 +1305,14 @@ async def nodeinfo(
     db_session: AsyncSession = Depends(get_db_session),
 ):
     local_posts = await public_outbox_objects_count(db_session)
+    #!CUS overwrite nodeinfo response
     return JSONResponse(
         {
             "version": "2.1",
             "software": {
                 "name": "microblogpub",
                 "version": config.VERSION,
-                "repository": "https://sr.ht/~tsileo/microblog.pub",
+                "repository": "https://github.com/NyaightHazard/log.nyaight.me.git",
                 "homepage": "https://docs.microblog.pub",
             },
             "protocols": ["activitypub"],
@@ -1319,7 +1320,16 @@ async def nodeinfo(
             "openRegistrations": False,
             "usage": {"users": {"total": 1}, "localPosts": local_posts},
             "metadata": {
-                "nodeName": LOCAL_ACTOR.handle,
+                "nodeName": "room#N/B log.",
+                "nodeDescription": "ActivityPubに向けてログを配信中。<br><a href='https://links.nyaight.me/portal'>🔗リンクまとめ</a> | 🏠ホームページ（🚧工事中）<br>中の人: <a href='https://misskey.io/@Nyaight_Hazard'><strong>@Nyaight_Hazard</strong>@misskey.io</a>",
+                "maintainer": {
+                    "name": "NyaightHazard",
+                    "email": "https://links.nyaight.me/portal"
+                },
+                "langs": ["ja","en"],
+                "repositoryUrl": "https://github.com/NyaightHazard/log.nyaight.me.git",
+                "disableRegistration": True,
+                "themeColor": "#FFFBF0"
             },
         },
         media_type=(
