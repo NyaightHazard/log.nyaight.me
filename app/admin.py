@@ -1185,6 +1185,13 @@ async def admin_actions_new(
     elif name:
         ap_type = "Article"
 
+    #!MOD change the break-line syntax works
+    content=content \
+        .replace("  \r\n","<br>\r\n") \
+        .replace("  \n","<br>\n") \
+        .replace("<br>\r\n","<br>") \
+        .replace("<br>\n","<br>")
+
     public_id, _ = await boxes.send_create(
         db_session,
         ap_type=ap_type,
