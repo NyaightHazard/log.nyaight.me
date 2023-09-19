@@ -1,0 +1,5 @@
+#!MOD add res folder
+# Put your files here that want to upload
+# These files are placed at https://yourdomain.tld/static/res/*
+*
+!.gitignore
