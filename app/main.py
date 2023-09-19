@@ -1656,7 +1656,7 @@ async def json_feed(
         )
     result = {
         "version": "https://jsonfeed.org/version/1.1",
-        "title": f"{LOCAL_ACTOR.display_name}'s microblog'",
+        "title": f"{LOCAL_ACTOR.display_name}",
         "home_page_url": LOCAL_ACTOR.url,
         "feed_url": BASE_URL + "/feed.json",
         "authors": [
@@ -1678,8 +1678,8 @@ async def _gen_rss_feed(
 ):
     fg = FeedGenerator()
     fg.id(BASE_URL + "/feed.rss")
-    fg.title(f"{LOCAL_ACTOR.display_name}'s microblog")
-    fg.description(f"{LOCAL_ACTOR.display_name}'s microblog")
+    fg.title(f"{LOCAL_ACTOR.display_name}")
+    fg.description(f"{LOCAL_ACTOR.display_name}")
     fg.author({"name": LOCAL_ACTOR.display_name})
     fg.link(href=LOCAL_ACTOR.url, rel="alternate")
     if LOCAL_ACTOR.icon_url:

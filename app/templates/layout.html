@@ -5,9 +5,9 @@
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" href="{{ BASE_URL }}/static/css/main.css?v={{ CSS_HASH }}">
-<link rel="alternate" title="{{ local_actor.display_name}}'s microblog" type="application/json" href="{{ url_for("json_feed") }}" />
-<link rel="alternate" href="{{ url_for("rss_feed") }}" type="application/rss+xml" title="{{ local_actor.display_name}}'s microblog">
-<link rel="alternate" href="{{ url_for("atom_feed") }}" type="application/atom+xml" title="{{ local_actor.display_name}}'s microblog">
+<link rel="alternate" title="{{ local_actor.display_name}}" type="application/json" href="{{ url_for("json_feed") }}" />
+<link rel="alternate" href="{{ url_for("rss_feed") }}" type="application/rss+xml" title="{{ local_actor.display_name}}">
+<link rel="alternate" href="{{ url_for("atom_feed") }}" type="application/atom+xml" title="{{ local_actor.display_name}}">
 <!-- #!CUS add svg favicon and take compatibility -->
 <link rel="icon" href="{{ BASE_URL }}/static/favicon.ico" sizes="48x48">
 <link rel="icon" href="{{ BASE_URL }}/static/favicon.svg" size="any" type="image/svg+xml">
