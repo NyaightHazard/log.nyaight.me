@@ -25,6 +25,10 @@ ROOT_DIR = Path().parent.resolve()
 
 _CONFIG_FILE = os.getenv("MICROBLOGPUB_CONFIG_FILE", "profile.toml")
 
+#!CUS set timezone locale for timestamp
+import humanize
+humanize.i18n.activate("ja_JP")
+
 #!CUS overwrite version
 VERSION_COMMIT = "dev+nyt"
 
