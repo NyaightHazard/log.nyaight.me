@@ -32,10 +32,12 @@ humanize.i18n.activate("ja_JP")
 #!CUS overwrite version
 VERSION_COMMIT = "dev+nyt"
 
-# try:
-#     from app._version import VERSION_COMMIT  # type: ignore
-# except ImportError:
-#     VERSION_COMMIT = get_version_commit()
+"""
+ try:
+     from app._version import VERSION_COMMIT  # type: ignore
+ except ImportError:
+     VERSION_COMMIT = get_version_commit()
+"""
 
 # Force reloading cache when the CSS is updated
 CSS_HASH = "none"
