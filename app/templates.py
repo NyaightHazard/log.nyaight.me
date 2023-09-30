@@ -29,6 +29,7 @@ from app.config import CUSTOM_FOOTER
 from app.config import DEBUG
 from app.config import SESSION_TIMEOUT
 from app.config import VERSION
+from app.config import LOCAL_TZ
 from app.config import generate_csrf_token
 from app.config import session_serializer
 from app.database import AsyncSession
@@ -128,6 +129,7 @@ async def render_template(
             ),
             "actor_types": ap.ACTOR_TYPES,
             "custom_footer": CUSTOM_FOOTER,
+            "local_tz": LOCAL_TZ,
             **template_args,
         },
         status_code=status_code,

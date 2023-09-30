@@ -1,8 +1,6 @@
 import hashlib
 import mimetypes
 from datetime import datetime
-from datetime import timezone
-from datetime import timedelta
 from functools import cached_property
 from typing import Any
 
@@ -56,17 +54,6 @@ class Object:
             return parse_isoformat(self.ap_object["published"])
         elif "created" in self.ap_object:
             return parse_isoformat(self.ap_object["created"])
-        return None
-
-    #!CUS set timezone locale for timestamp
-    @cached_property
-    def ap_published_at_local(self) -> datetime | None:
-        if "published" in self.ap_object:
-            return parse_isoformat(self.ap_object["published"]) \
-                    .astimezone(timezone(timedelta(hours=+9)))
-        elif "created" in self.ap_object:
-            return parse_isoformat(self.ap_object["created"]) \
-                    .astimezone(timezone(timedelta(hours=+9)))
         return None
 
     @property

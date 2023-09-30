@@ -15,6 +15,10 @@ from itsdangerous import URLSafeTimedSerializer
 from loguru import logger
 from mistletoe import markdown  # type: ignore
 
+import humanize
+from datetime import timezone
+from datetime import timedelta
+
 from app.customization import _CUSTOM_ROUTES
 from app.customization import _StreamVisibilityCallback
 from app.customization import default_stream_visibility_callback
@@ -26,17 +30,20 @@ ROOT_DIR = Path().parent.resolve()
 _CONFIG_FILE = os.getenv("MICROBLOGPUB_CONFIG_FILE", "profile.toml")
 
 #!CUS set timezone locale for timestamp
-import humanize
+# put .astimezone(local) afrer 
+#   ap_published_at, poll_end_time, wm_reply.published_at
+# but don't (need to) use with `| timeago`
 humanize.i18n.activate("ja_JP")
+LOCAL_TZ = timezone(timedelta(hours=+9))
 
 #!CUS overwrite version
 VERSION_COMMIT = "dev+nyt"
 
 """
- try:
-     from app._version import VERSION_COMMIT  # type: ignore
- except ImportError:
-     VERSION_COMMIT = get_version_commit()
+try:
+    from app._version import VERSION_COMMIT  # type: ignore
+except ImportError:
+    VERSION_COMMIT = get_version_commit()
 """
 
 # Force reloading cache when the CSS is updated
