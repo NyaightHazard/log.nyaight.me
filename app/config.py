@@ -30,7 +30,7 @@ ROOT_DIR = Path().parent.resolve()
 _CONFIG_FILE = os.getenv("MICROBLOGPUB_CONFIG_FILE", "profile.toml")
 
 #!CUS set timezone locale for timestamp
-# put .astimezone(local) afrer 
+# put .astimezone(local_tz) afrer 
 #   ap_published_at, poll_end_time, wm_reply.published_at
 # but don't (need to) use with `| timeago`
 humanize.i18n.activate("ja_JP")
