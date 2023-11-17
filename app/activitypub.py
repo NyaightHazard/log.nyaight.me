@@ -42,6 +42,7 @@ AS_EXTENDED_CTX = [
         "Emoji": "toot:Emoji",
         "blurhash": "toot:blurhash",
         "votersCount": "toot:votersCount",
+        "discoverable": "toot:discoverable",
         # schema
         "schema": "http://schema.org#",
         "PropertyValue": "schema:PropertyValue",
@@ -141,6 +142,9 @@ ME = {
         "publicKeyPem": get_pubkey_as_pem(config.KEY_PATH),
     },
     "tag": dedup_tags(_LOCAL_ACTOR_TAGS),
+    #!CUS discoverable flag (Mastodon extension)
+    #ref: https://docs.joinmastodon.org/spec/activitypub/#discoverable
+    "discoverable": True,
 }
 
 if config.CONFIG.icon_url:
