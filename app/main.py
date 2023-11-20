@@ -1321,10 +1321,10 @@ async def nodeinfo(
             "usage": {"users": {"total": 1}, "localPosts": local_posts},
             "metadata": {
                 "nodeName": "room#N/B log.",
-                "nodeDescription": "ActivityPubに向けてログを配信中。<br><a href='https://links.nyaight.me/portal'>🔗リンクまとめ</a> | 🏠ホームページ（🚧工事中）<br>中の人: <a href='https://misskey.io/@Nyaight_Hazard'><strong>@Nyaight_Hazard</strong>@misskey.io</a>",
+                "nodeDescription": "ActivityPubに向けてログを配信中。<br><a href='https://links.nyaight.me/'>🔗リンクまとめ</a> | 🏠ホームページ（🚧工事中）<br>中の人: <a href='https://misskey.io/@Nyaight_Hazard'><strong>@Nyaight_Hazard</strong>@misskey.io</a>",
                 "maintainer": {
                     "name": "NyaightHazard",
-                    "email": "https://links.nyaight.me/portal"
+                    "email": "https://links.nyaight.me/"
                 },
                 "langs": ["ja","en"],
                 "repositoryUrl": "https://github.com/NyaightHazard/log.nyaight.me.git",
