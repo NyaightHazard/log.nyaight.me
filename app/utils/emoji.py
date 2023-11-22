@@ -28,7 +28,8 @@ def _load_emojis(root_dir: Path, base_url: str) -> None:
                 ap_emoji: "RawObject" = {
                     "type": "Emoji",
                     "name": f":{name}:",
-                    "updated": "1970-01-01T00:00:00Z",  # XXX: we don't track date
+                    #!CUS last updated of emoji
+                    "updated": "1970-01-01T00:00:00Z",
                     "id": f"{base_url}/e/{name}",
                     "icon": {
                         "mediaType": mt,
