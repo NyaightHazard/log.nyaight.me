@@ -142,9 +142,7 @@ ME = {
         "publicKeyPem": get_pubkey_as_pem(config.KEY_PATH),
     },
     "tag": dedup_tags(_LOCAL_ACTOR_TAGS),
-    #!CUS discoverable flag (Mastodon extension)
-    #ref: https://docs.joinmastodon.org/spec/activitypub/#discoverable
-    "discoverable": True,
+    "discoverable": config.DISCOVERABLE,
 }
 
 if config.CONFIG.icon_url:

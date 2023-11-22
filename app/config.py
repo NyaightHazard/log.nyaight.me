@@ -29,14 +29,7 @@ ROOT_DIR = Path().parent.resolve()
 
 _CONFIG_FILE = os.getenv("MICROBLOGPUB_CONFIG_FILE", "profile.toml")
 
-#!CUS set timezone locale for timestamp
-# put .astimezone(local_tz) afrer 
-#   ap_published_at, poll_end_time, wm_reply.published_at
-# but don't (need to) use with `| timeago`
-humanize.i18n.activate("ja_JP")
-LOCAL_TZ = timezone(timedelta(hours=+9))
-
-#!CUS overwrite version
+#!MOD overwrite version
 VERSION_COMMIT = "dev+nyt"
 
 """
@@ -142,6 +135,11 @@ class Config(pydantic.BaseModel):
 
     disabled_notifications: list[str] = []
 
+    # extension for CUS
+    local_format = "en_US"
+    local_utc: int = 0
+    discoverable: bool = True
+
     # Only set when the app is served on a non-root path
     id: str | None = None
 
@@ -227,6 +225,11 @@ EMOJI_TPL = (
 _load_emojis(ROOT_DIR, BASE_URL)
 
 CODE_HIGHLIGHTING_THEME = CONFIG.code_highlighting_theme
+
+# vals from CUS
+humanize.i18n.activate(CONFIG.local_format)
+LOCAL_TZ = timezone(timedelta(hours=CONFIG.local_utc))
+DISCOVERABLE = CONFIG.discoverable
 
 MOVED_TO = _get_moved_to()
 

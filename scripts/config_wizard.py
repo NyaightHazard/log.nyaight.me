@@ -83,6 +83,18 @@ def main() -> None:
 
     with config_file.open("w") as f:
         f.write(tomli_w.dumps(dat))
+        f.write("""
+#!CUS set timezone locale for timestamp
+# on templates, put .astimezone(local_tz) afrer 
+#   ap_published_at, poll_end_time, wm_reply.published_at
+# but don't (need to) use with | timeago
+local_format = "en_US"
+local_utc = 0
+
+#!CUS discoverable flag (Mastodon extension)
+#ref: https://docs.joinmastodon.org/spec/activitypub/#discoverable
+discoverable = true
+""")
 
     print("Done")
     sys.exit(0)
