@@ -50,6 +50,9 @@ AS_EXTENDED_CTX = [
         # ostatus
         "ostatus": "http://ostatus.org#",
         "conversation": "ostatus:conversation",
+        # misskey
+        "misskey": "https://misskey-hub.net/ns#",
+        "_misskey_reaction": "misskey:_misskey_reaction"
     },
 ]
 

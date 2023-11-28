@@ -1,6 +1,8 @@
 """Actions related to the AP inbox/outbox."""
 import datetime
+import emoji
 import uuid
+import re
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import timedelta
@@ -43,6 +45,7 @@ from app.utils import webmentions
 from app.utils.datetime import as_utc
 from app.utils.datetime import now
 from app.utils.datetime import parse_isoformat
+from app.utils.emoji import EMOJIS_BY_NAME
 from app.utils.facepile import WebmentionReply
 from app.utils.text import slugify
 from app.utils.url import is_hostname_blocked
@@ -249,7 +252,7 @@ async def send_delete(db_session: AsyncSession, ap_object_id: str) -> None:
     await db_session.commit()
 
 
-async def send_like(db_session: AsyncSession, ap_object_id: str) -> None:
+async def send_like(db_session: AsyncSession, ap_object_id: str, reaction: str) -> None:
     inbox_object = await get_inbox_object_by_ap_id(db_session, ap_object_id)
     if not inbox_object:
         logger.info(f"Saving unknwown object {ap_object_id}")
@@ -270,6 +273,15 @@ async def send_like(db_session: AsyncSession, ap_object_id: str) -> None:
         "actor": ID,
         "object": ap_object_id,
     }
+    
+    if reaction:
+        if res:=re.search(emoji.get_emoji_regexp(),reaction):
+            like["content"] = res.group()
+        elif (res:=re.search(":\w+:",reaction)) and (res.group() in EMOJIS_BY_NAME):
+            like["content"] = res.group()
+            like["_misskey_reaction"] = res.group()
+            like["tag"] = [ EMOJIS_BY_NAME[res.group()] ]
+    
     outbox_object = await save_outbox_object(
         db_session, like_id, like, relates_to_inbox_object_id=inbox_object.id
     )

@@ -1034,10 +1034,11 @@ async def admin_actions_like(
     request: Request,
     ap_object_id: str = Form(),
     redirect_url: str = Form(),
+    reaction: str = Form(),
     csrf_check: None = Depends(verify_csrf_token),
     db_session: AsyncSession = Depends(get_db_session),
 ) -> RedirectResponse:
-    await boxes.send_like(db_session, ap_object_id)
+    await boxes.send_like(db_session, ap_object_id, reaction)
     return RedirectResponse(redirect_url, status_code=302)
 
 
