@@ -48,7 +48,7 @@
     {% if custom_footer %}
         {{ custom_footer | safe }}
     {% else %}
-        Powered by <a href="https://docs.microblog.pub">microblog.pub</a> <small class="microblogpub-version"><code>{{ microblogpub_version }}</code></small> and the <a href="https://activitypub.rocks/">ActivityPub</a> protocol. <a href="{{ url_for("login") }}">Admin</a>.
+        Powered by <a href="https://docs.microblog.pub">microblog.pub</a> <small class="microblogpub-version"><code>{{ microblogpub_version }}</code>(<a href="https://github.com/NyaightHazard/log.nyaight.me.git">source</a>)</small> and the <a href="https://activitypub.rocks/">ActivityPub</a> protocol. <a href="{{ url_for("login") }}">Admin</a>.
     {% endif %}
     </div>
 </footer>
