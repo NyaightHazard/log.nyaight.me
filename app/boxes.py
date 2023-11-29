@@ -252,7 +252,7 @@ async def send_delete(db_session: AsyncSession, ap_object_id: str) -> None:
     await db_session.commit()
 
 
-async def send_like(db_session: AsyncSession, ap_object_id: str, reaction: str) -> None:
+async def send_like(db_session: AsyncSession, ap_object_id: str, reaction: str | None) -> None:
     inbox_object = await get_inbox_object_by_ap_id(db_session, ap_object_id)
     if not inbox_object:
         logger.info(f"Saving unknwown object {ap_object_id}")
