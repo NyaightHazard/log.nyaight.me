@@ -29,7 +29,7 @@ def _load_emojis(root_dir: Path, base_url: str) -> None:
                     "type": "Emoji",
                     "name": f":{name}:",
                     #!CUS last updated of emoji
-                    "updated": "1970-01-01T00:00:00Z",
+                    "updated": "2023-12-02T16:30:00Z",
                     "id": f"{base_url}/e/{name}",
                     "icon": {
                         "mediaType": mt,
