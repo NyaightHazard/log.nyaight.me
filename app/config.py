@@ -56,6 +56,7 @@ try:
         ROOT_DIR / "app" / "static" / "common.js",
         ROOT_DIR / "app" / "static" / "common-admin.js",
         ROOT_DIR / "app" / "static" / "new.js",
+        ROOT_DIR / "app" / "static" / "reaction.js",
     ]:
         dat += j.read_bytes()
     JS_HASH = hashlib.md5(dat, usedforsecurity=False).hexdigest()
