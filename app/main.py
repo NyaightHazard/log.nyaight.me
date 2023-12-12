@@ -1321,7 +1321,7 @@ async def nodeinfo(
             "usage": {"users": {"total": 1}, "localPosts": local_posts},
             "metadata": {
                 "nodeName": "room#N/B log.",
-                "nodeDescription": "いろんなことをしたり見たりしてる人<br>あることないこと日記に書いていく<br>気まぐれに更新中...<br>Mi.io: <a href='https://misskey.io/@Nyaight_Hazard'><strong>@Nyaight_Hazard</strong>@misskey.io</a><br><a href='https://links.nyaight.me/'>🔗リンクまとめ</a> | 🏠ホームページ（🚧工事中）",
+                "nodeDescription": "いろんなことをしたり見たりしてる人<br>あることないこと日記に書いていく<br>気まぐれに更新中...<br>Mi.io: <a href='https://misskey.io/@Nyaight_Hazard'><strong>@Nyaight_Hazard</strong>@misskey.io</a><br><a href='https://links.nyaight.me/'>🔗リンクまとめ</a> | <a href='https://nyaight.me/ja/'>🏠ホームページ</a>",
                 "maintainer": {
                     "name": "NyaightHazard",
                     "email": "https://links.nyaight.me/"
