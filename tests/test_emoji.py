@@ -38,6 +38,7 @@ def test_emoji_note_with_emoji(db: Session, client: TestClient) -> None:
             "csrf_token": generate_csrf_token(),
         },
         cookies=generate_admin_session_cookies(),
+        follow_redirects=False,
     )
 
     # Then the server returns a 302

@@ -30,6 +30,7 @@ def test_tags__note_with_tag(db: Session, client: TestClient) -> None:
             "csrf_token": generate_csrf_token(),
         },
         cookies=generate_admin_session_cookies(),
+        follow_redirects=False,
     )
 
     # Then the server returns a 302

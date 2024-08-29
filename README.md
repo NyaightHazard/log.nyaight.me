@@ -1,18 +1,18 @@
 # microblog.pub
 
-A self-hosted, single-user, ActivityPub powered microblog.
+A self-hosted, single-user, ActivityPub-powered microblog created by [@tsileo](https://github.com/tsileo/microblog.pub).
+This repo and collective is a respectful attempt by the users of the project to keep it going!
 
-[![builds.sr.ht status](https://builds.sr.ht/~tsileo/microblog.pub.svg)](https://builds.sr.ht/~tsileo/microblog.pub?)
-[![AGPL 3.0](https://img.shields.io/badge/license-AGPL_3.0-blue.svg?style=flat)](https://git.sr.ht/~tsileo/microblog.pub/tree/v2/item/LICENSE)
+[![AGPL 3.0](https://img.shields.io/badge/license-AGPL_3.0-blue.svg?style=flat)](LICENSE)
+
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md) 
 
 Instances in the wild:
 
- - [microblog.pub](https://microblog.pub/) (follow to get updated about the project)
- - [hexa.ninja](https://hexa.ninja) (theme customization example)
- - [testing.microblog.pub](https://testing.microblog.pub/)
- - [Irish Left Archive](https://posts.leftarchive.ie/) (another theme customization example)
+ - [blog.joaocosta.eu](https://blog.joaocosta.eu/)
+ - [bw3.dev](https://bw3.dev/)
+ - [blog.nigini.me](https://blog.nigini.me)
 
-There are still some rough edges, but the server is mostly functional.
 
 ## Features
 
@@ -29,9 +29,9 @@ There are still some rough edges, but the server is mostly functional.
     - EXIF metadata (like GPS location) are stripped before storage
     - Every media is proxied through the server
     - Strict access control for your outbox enforced via HTTP signature
- - **No** Javascript
+ - **Little** Javascript
     - The UI is pure HTML/CSS
-    - Except tiny bits of hand-written JS in the note composer to insert emoji and add alt text to images
+    - Except for tiny bits of hand-written JS
  - IndieWeb citizen
     - [IndieAuth](https://www.w3.org/TR/indieauth/) support (OAuth2 extension)
     - [Microformats](http://microformats.org/wiki/Main_Page) everywhere
@@ -39,11 +39,11 @@ There are still some rough edges, but the server is mostly functional.
     - Sends and processes [Webmentions](https://www.w3.org/TR/webmention/)
     - RSS/Atom/[JSON](https://www.jsonfeed.org/) feed
  - Easy to backup
-    - Everything is stored in the `data/` directory: config, uploads, secrets and the SQLite database.
+    - Everything is stored in the `data/` directory: config, uploads, secrets, and the SQLite database.
 
 ## Getting started
 
-Check out the [online documentation](https://docs.microblog.pub).   
+Check out the [online documentation](https://microblog-pub.github.io/microblog.pub/)
 
 ## Credits
 
@@ -53,15 +53,19 @@ Check out the [online documentation](https://docs.microblog.pub).
 
 ## Contributing
 
-All the development takes place on [sourcehut](https://sr.ht/~tsileo/microblog.pub/), GitHub is only used as a mirror:
+*Development used to take place on [sourcehut](https://sr.ht/~tsileo/microblog.pub/) but is staled for more than a year!*
 
- - [Project](https://sr.ht/~tsileo/microblog.pub/)
- - [Issue tracker](https://todo.sr.ht/~tsileo/microblog.pub)
- - [Mailing list](https://sr.ht/~tsileo/microblog.pub/lists)
+This is where the project is being reanimated:
 
-Contributions are welcomed, check out the [contributing section of the documentation](https://docs.microblog.pub/developer_guide.html#contributing) for more details.
-
+ - [ORG](https://github.com/microblog-pub/)
+ - [CONDUCT](code_of_conduct.md)
+ - [CODE](https://github.com/microblog-pub/microblog.pub)
+    - Contributions are more than welcomed via Pull Requests, but first, make sure to discuss your ideas and get assigned to an issue.
+ - [DISCUSSION](https://github.com/microblog-pub/microblog.pub/discussions)
+    - Where we meet to talk about the project, bounce ideas around, and shape the next steps of the project
+ - [ISSUES](https://github.com/microblog-pub/microblog.pub/issues)
+    - Used for technical description of bugs, issues, and improvements (please use discussion for ideation and open-ended conversations.)
 
 ## License
 
-The project is licensed under the GNU AGPL v3 LICENSE (see the LICENSE file).
+The project is licensed under the [GNU AGPL v3 LICENSE](LICENSE).

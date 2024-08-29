@@ -42,7 +42,7 @@ class Worker(Generic[T]):
         for s in signals:
             self._loop.add_signal_handler(
                 s,
-                lambda s=s: asyncio.create_task(self._shutdown(s)),
+                lambda s=s: asyncio.create_task(self._shutdown(s)),  # type: ignore
             )
 
         async with async_session() as db_session:

@@ -119,9 +119,11 @@ class Object:
                 Attachment.parse_obj(
                     {
                         "proxiedUrl": proxied_url,
-                        "resizedUrl": proxied_url + "/740"
-                        if obj.get("mediaType", "").startswith("image")
-                        else None,
+                        "resizedUrl": (
+                            proxied_url + "/740"
+                            if obj.get("mediaType", "").startswith("image")
+                            else None
+                        ),
                         **obj,
                     }
                 )
@@ -282,8 +284,8 @@ class BaseModel(pydantic.BaseModel):
 
 class Attachment(BaseModel):
     type: str
-    media_type: str | None
-    name: str | None
+    media_type: str | None = None
+    name: str | None = None
     url: str
 
     # Extra fields for the templates (and only for media)

@@ -51,6 +51,5 @@ files.addEventListener("change", function(e) {
     }
 });
 // Focus at the end of the textarea
-const end = ta.value.length;
-ta.setSelectionRange(end, end);
+ta.setSelectionRange(ta.value.length, ta.value.length);
 ta.focus();

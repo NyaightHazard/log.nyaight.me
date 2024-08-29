@@ -42,15 +42,15 @@ def is_source_containing_target(source_html: str, target_url: str) -> bool:
     return False
 
 
-@router.post("/webmentions")
+@router.post("/webmentions", response_model=None)
 async def webmention_endpoint(
     request: Request,
     db_session: AsyncSession = Depends(get_db_session),
 ) -> JSONResponse:
     form_data = await request.form()
     try:
-        source = form_data["source"]
-        target = form_data["target"]
+        source = str(form_data["source"])
+        target = str(form_data["target"])
 
         if source == target:
             raise ValueError("source URL is the same as target")

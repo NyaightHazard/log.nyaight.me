@@ -1,4 +1,5 @@
 """Basic wizard for setting up microblog.pub configuration files."""
+
 import os
 import sys
 from pathlib import Path

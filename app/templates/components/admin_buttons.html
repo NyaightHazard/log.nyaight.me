@@ -1,0 +1,191 @@
+{%- import "components/hidden_inputs.html" as hidden_inputs -%}
+
+{% macro admin_block_button(request, csrf_token, actor) %}
+<form action="{{ request.url_for("admin_actions_block") }}" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request) }}
+    <input type="hidden" name="ap_actor_id" value="{{ actor.ap_id }}">
+    <input type="submit" value="block">
+</form>
+{% endmacro %}
+
+{% macro admin_unblock_button(request, csrf_token, actor) %}
+<form action="{{ request.url_for("admin_actions_unblock") }}" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request) }}
+    <input type="hidden" name="ap_actor_id" value="{{ actor.ap_id }}">
+    <input type="submit" value="unblock">
+</form>
+{% endmacro %}
+
+{% macro admin_hide_shares_button(request, csrf_token, actor) %}
+<form action="{{ request.url_for("admin_actions_hide_announces") }}" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request) }}
+    <input type="hidden" name="ap_actor_id" value="{{ actor.ap_id }}">
+    <input type="submit" value="hide shares">
+</form>
+{% endmacro %}
+
+{% macro admin_show_shares_button(request, csrf_token, actor) %}
+<form action="{{ request.url_for("admin_actions_show_announces") }}" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request) }}
+    <input type="hidden" name="ap_actor_id" value="{{ actor.ap_id }}">
+    <input type="submit" value="show shares">
+</form>
+{% endmacro %}
+
+{% macro admin_follow_button(request, csrf_token, actor) %}
+<form action="{{ request.url_for("admin_actions_follow") }}" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request) }}
+    <input type="hidden" name="ap_actor_id" value="{{ actor.ap_id }}">
+    <input type="submit" value="follow">
+</form>
+{% endmacro %}
+
+{% macro admin_accept_incoming_follow_button(request, csrf_token, notif) %}
+<form action="{{ request.url_for("admin_actions_accept_incoming_follow") }}" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request) }}
+    <input type="hidden" name="notification_id" value="{{ notif.id }}">
+    <input type="submit" value="accept follow">
+</form>
+{% endmacro %}
+
+{% macro admin_reject_incoming_follow_button(request, csrf_token, notif) %}
+<form action="{{ request.url_for("admin_actions_reject_incoming_follow") }}" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request) }}
+    <input type="hidden" name="notification_id" value="{{ notif.id }}">
+    <input type="submit" value="reject follow">
+</form>
+{% endmacro %}
+
+{% macro admin_like_button(request, csrf_token, ap_object_id, permalink_id) %}
+<form action="{{ request.url_for("admin_actions_like") }}" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request, permalink_id) }}
+    <input type="hidden" name="ap_object_id" value="{{ ap_object_id }}">
+    <input type="submit" value="like">
+</form>
+{% endmacro %}
+
+{% macro admin_bookmark_button(request, csrf_token, ap_object_id, permalink_id) %}
+<form action="{{ request.url_for("admin_actions_bookmark") }}" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request, permalink_id) }}
+    <input type="hidden" name="ap_object_id" value="{{ ap_object_id }}">
+    <input type="submit" value="bookmark">
+</form>
+{% endmacro %}
+
+{% macro admin_unbookmark_button(request, csrf_token, ap_object_id, permalink_id) %}
+<form action="{{ request.url_for("admin_actions_unbookmark") }}" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request, permalink_id) }}
+    <input type="hidden" name="ap_object_id" value="{{ ap_object_id }}">
+    <input type="submit" value="unbookmark">
+</form>
+{% endmacro %}
+
+{% macro admin_pin_button(request, csrf_token, ap_object_id, permalink_id) %}
+<form action="{{ request.url_for("admin_actions_pin") }}" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request, permalink_id) }}
+    <input type="hidden" name="ap_object_id" value="{{ ap_object_id }}">
+    <input type="submit" value="pin">
+</form>
+{% endmacro %}
+
+{% macro admin_unpin_button(request, csrf_token, ap_object_id, permalink_id) %}
+<form action="{{ request.url_for("admin_actions_unpin") }}" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request, permalink_id) }}
+    <input type="hidden" name="ap_object_id" value="{{ ap_object_id }}">
+    <input type="submit" value="unpin">
+</form>
+{% endmacro %}
+
+{% macro admin_delete_button(request, csrf_token, ap_object) %}
+<form action="{{ request.url_for("admin_actions_delete") }}" class="object-delete-form" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    <input type="hidden" name="redirect_url" value="{% if request.url.path.endswith("/" + ap_object.public_id) or (request.url.path == "/admin/object" and request.query_params.ap_id.endswith("/" + ap_object.public_id)) %}{{ request.base_url}}{% else %}{{ request.url }}{% endif %}">
+    <input type="hidden" name="ap_object_id" value="{{ ap_object.ap_id }}">
+    <input type="submit" value="delete">
+</form>
+{% endmacro %}
+
+{% macro admin_force_delete_button(request, csrf_token, ap_object_id, permalink_id=None) %}
+<form action="{{ request.url_for("admin_actions_force_delete") }}" class="object-delete-form" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request, permalink_id) }}
+    <input type="hidden" name="ap_object_id" value="{{ ap_object_id }}">
+    <input type="submit" value="local delete">
+</form>
+{% endmacro %}
+
+{% macro admin_force_delete_webmention_button(request, csrf_token, webmention_id, permalink_id=None) %}
+<form action="{{ request.url_for("admin_actions_force_delete_webmention") }}" class="object-delete-form" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request, permalink_id) }}
+    <input type="hidden" name="webmention_id" value="{{ webmention_id }}">
+    <input type="submit" value="local delete">
+</form>
+{% endmacro %}
+
+{% macro admin_announce_button(request, csrf_token, ap_object_id, permalink_id=None) %}
+<form action="{{ request.url_for("admin_actions_announce") }}" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request, permalink_id) }}
+    <input type="hidden" name="ap_object_id" value="{{ ap_object_id }}">
+    <input type="submit" value="share">
+</form>
+{% endmacro %}
+
+{% macro admin_undo_button(request, csrf_token, ap_object_id, action="undo", permalink_id=None) %}
+<form action="{{ request.url_for("admin_actions_undo") }}" method="POST">
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request, permalink_id) }}
+    <input type="hidden" name="ap_object_id" value="{{ ap_object_id }}">
+    <input type="submit" value="{{ action }}">
+</form>
+{% endmacro %}
+
+{% macro admin_reply_button(request, csrf_token, ap_object_id) %}
+<form action="{{ BASE_URL }}/admin/new"  method="GET">
+<input type="hidden" name="in_reply_to" value="{{ ap_object_id }}">
+<button type="submit">reply</button>
+</form>
+{% endmacro %}
+
+{% macro admin_dm_button(request, csrf_token, actor_handle) %}
+<form action="{{ BASE_URL }}/admin/new"  method="GET">
+<input type="hidden" name="with_content" value="{{ actor_handle }}">
+<input type="hidden" name="with_visibility" value="DIRECT">
+<button type="submit">direct message</button>
+</form>
+{% endmacro %}
+
+{% macro admin_mention_button(request, csrf_token, actor_handle) %}
+<form action="{{ BASE_URL }}/admin/new"  method="GET">
+<input type="hidden" name="with_content" value="{{ actor_handle }}">
+<button type="submit">mention</button>
+</form>
+{% endmacro %}
+
+{% macro admin_profile_button(request, csrf_token, ap_actor_id) %}
+<form action="{{ request.url_for("admin_profile") }}"  method="GET">
+<input type="hidden" name="actor_id" value="{{ ap_actor_id }}">
+<button type="submit">profile</button>
+</form>
+{% endmacro %}
+
+{% macro admin_expand_button(request, csrf_token, ap_object) %}
+{# TODO turn these into a regular link and append permalink ID if it's a reply #}
+<form action="{{ request.url_for("admin_object") }}"  method="GET">
+<input type="hidden" name="ap_id" value="{{ ap_object.ap_id }}">
+<button type="submit">expand</button>
+</form>
+{% endmacro %}

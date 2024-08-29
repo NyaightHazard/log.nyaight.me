@@ -1,4 +1,4 @@
-{%- import "utils.html" as utils with context -%}
+{%- import "components/actor.html" as actor_component -%}
 {% extends "layout.html" %}
 
 {% block head %}
@@ -11,7 +11,11 @@
 <div id="following">
 <ul>
 {% for follow in following %}
-<li>{{ utils.display_actor(follow.actor, actors_metadata) }}</li>
+<li>
+    <div class="ap-object">
+        {{ actor_component.display_actor(request, csrf_token, is_admin, follow.actor, actors_metadata) }}
+    </div>
+</li>
 {% endfor %}
 </ul>
 

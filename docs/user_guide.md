@@ -188,9 +188,9 @@ Moreover, `utils.html` has scoped blocks around the body of every macro.
 This allows macros to be overridden individually in `data/templates/utils.html`, without copying the whole file.
 For example, to only override the display of a specific actor's name/icon, you can create `data/templates/utils.html` file with following content:
 
+{% raw %}
 ```jinja
 {% extends "app/utils.html" %}
-
 {% block display_actor %}
 	{% if actor.ap_id == "https://me.example.com" %}
 		<!-- custom actor display -->
@@ -199,6 +199,7 @@ For example, to only override the display of a specific actor's name/icon, you c
 	{% endif %}
 {% endblock %}
 ```
+{% endraw %}
 
 #### Custom Content Security Policy (CSP)
 

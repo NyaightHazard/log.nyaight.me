@@ -1,4 +1,4 @@
-{%- import "utils.html" as utils with context -%}
+{%- import "components/hidden_inputs.html" as hidden_inputs -%}
 {% extends "layout.html" %}
 
 {% block head %}
@@ -10,12 +10,22 @@
 {% include "header.html" %}
 
 <div class="box">
-<h2>Remotely follow {{ local_actor.display_name }}</h2>
+<h2>Follow {{ local_actor.display_name }}</h2>
+
+<h3>ActivityPub</h3>
+<p>If you have an ActivityPub account (e.g. Mastodon, Pleroma...), you can follow
+me to receive my posts on your home feed.
+</p>
+<p>What's your account?</p>
 <form class="form" action="{{ url_for("post_remote_follow") }}" method="POST">
-    {{ utils.embed_csrf_token() }}
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
     <input type="text" name="profile" placeholder="you@instance.tld" autofocus>
     <input type="submit" value="follow">
 </form>
+
+<h3>RSS</h3>
+<p>You can also follow me using the following <a href="/feed.json">RSS Feed</a>.</p>
+
 </div>
 
 {% endblock %}

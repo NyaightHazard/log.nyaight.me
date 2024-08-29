@@ -1,7 +1,9 @@
 {%- import "utils.html" as utils with context -%}
+{%- import "components/hidden_inputs.html" as hidden_inputs -%}
 {% extends "layout.html" %}
 
 {% block head %}
+<link rel="manifest" href="/static/pwa.webmanifest" />
 <title>{{ local_actor.display_name }} - New</title>
 {% endblock %}
 
@@ -13,7 +15,7 @@
 {% endif %}
 
 <div class="box">
-<nav class="flexbox">
+<nav class="flexbox" hx-boost="true" hx-indicator="body">
 <ul>
 {% for ap_type in ["Note", "Article", "Question"] %}
 <li><a href="?type={{ ap_type }}" {% if request.query_params.get("type", "Note") == ap_type %}class="active"{% endif %}>
@@ -26,8 +28,8 @@
 
 
 <form class="form admin-new" action="{{ request.url_for("admin_actions_new") }}" enctype="multipart/form-data" method="POST">
-    {{ utils.embed_csrf_token() }}
-    {{ utils.embed_redirect_url() }}
+    {{ hidden_inputs.embed_csrf_token(csrf_token) }}
+    {{ hidden_inputs.embed_redirect_url(request) }}
     <p>
     <select name="visibility">
         {% for (k, v) in visibility_choices %}

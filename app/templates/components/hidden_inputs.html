@@ -1,0 +1,8 @@
+{% macro embed_csrf_token(csrf_token) %}
+<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+{% endmacro %}
+
+{% macro embed_redirect_url(request, permalink_id=None) %}
+<input type="hidden" name="redirect_url" value="{{ request.url }}{% if permalink_id %}#{{ permalink_id }}{% endif %}">
+{% endmacro %}
+

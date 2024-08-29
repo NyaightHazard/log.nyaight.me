@@ -171,9 +171,9 @@ def setup_remote_actor_as_following_and_follower(
 
 def setup_outbox_note(
     content: str = "Hello",
-    to: list[str] = None,
-    cc: list[str] = None,
-    tags: list[ap.RawObject] = None,
+    to: list[str] | None = None,
+    cc: list[str] | None = None,
+    tags: list[ap.RawObject] | None = None,
     in_reply_to: str | None = None,
 ) -> models.OutboxObject:
     note_id = uuid4().hex
@@ -195,9 +195,9 @@ def setup_outbox_note(
 def setup_inbox_note(
     actor: models.Actor,
     content: str = "Hello",
-    to: list[str] = None,
-    cc: list[str] = None,
-    tags: list[ap.RawObject] = None,
+    to: list[str] | None = None,
+    cc: list[str] | None = None,
+    tags: list[ap.RawObject] | None = None,
     in_reply_to: str | None = None,
 ) -> models.OutboxObject:
     note_id = uuid4().hex

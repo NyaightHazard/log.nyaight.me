@@ -46,6 +46,7 @@ def test_send_follow_request(
             "csrf_token": generate_csrf_token(),
         },
         cookies=generate_admin_session_cookies(),
+        follow_redirects=False,
     )
 
     # Then the server returns a 302
@@ -103,6 +104,7 @@ def test_send_delete__reverts_side_effects(
             "csrf_token": generate_csrf_token(),
         },
         cookies=generate_admin_session_cookies(),
+        follow_redirects=False,
     )
 
     # Then the server returns a 302
@@ -170,6 +172,7 @@ def test_send_create_activity__with_attachment(
                 ("files", ("attachment.txt", "hello")),
             ],
             cookies=generate_admin_session_cookies(),
+            follow_redirects=False,
         )
 
     # Then the server returns a 302
@@ -218,6 +221,7 @@ def test_send_create_activity__no_content_with_cw_and_attachments(
             },
             files={"files": ("attachment.txt", "hello")},
             cookies=generate_admin_session_cookies(),
+            follow_redirects=False,
         )
 
     # Then the server returns a 302
@@ -249,6 +253,7 @@ def test_send_create_activity__no_followers_and_with_mention(
                 "csrf_token": generate_csrf_token(),
             },
             cookies=generate_admin_session_cookies(),
+            follow_redirects=False,
         )
 
     # Then the server returns a 302
@@ -285,6 +290,7 @@ def test_send_create_activity__with_followers(
                 "csrf_token": generate_csrf_token(),
             },
             cookies=generate_admin_session_cookies(),
+            follow_redirects=False,
         )
 
     # Then the server returns a 302
@@ -320,11 +326,12 @@ def test_send_create_activity__question__one_of(
                 "visibility": ap.VisibilityEnum.PUBLIC.name,
                 "csrf_token": generate_csrf_token(),
                 "poll_type": "oneOf",
-                "poll_duration": 5,
+                "poll_duration": "5",
                 "poll_answer_1": "A",
                 "poll_answer_2": "B",
             },
             cookies=generate_admin_session_cookies(),
+            follow_redirects=False,
         )
 
     # Then the server returns a 302
@@ -364,13 +371,14 @@ def test_send_create_activity__question__any_of(
                 "visibility": ap.VisibilityEnum.PUBLIC.name,
                 "csrf_token": generate_csrf_token(),
                 "poll_type": "anyOf",
-                "poll_duration": 10,
+                "poll_duration": "10",
                 "poll_answer_1": "A",
                 "poll_answer_2": "B",
                 "poll_answer_3": "C",
                 "poll_answer_4": "D",
             },
             cookies=generate_admin_session_cookies(),
+            follow_redirects=False,
         )
 
     # Then the server returns a 302
@@ -412,6 +420,7 @@ def test_send_create_activity__article(
                 "name": "Article",
             },
             cookies=generate_admin_session_cookies(),
+            follow_redirects=False,
         )
 
     # Then the server returns a 302

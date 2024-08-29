@@ -1,0 +1,136 @@
+{%- import "components/admin_buttons.html" as admin_buttons -%}
+
+{% macro tiny_actor_icon(actor) %}
+    <img class="tiny-actor-icon" src="{{ actor.resized_icon_url }}" alt="" loading="lazy">
+{% endmacro %}
+
+{% macro actor_action(admin_profile_url, inbox_object, text, with_icon=False, new_flag=False) %}
+{% set timestamp = inbox_object.ap_published_at %}
+{% if not timestamp %}
+  {% set timestamp = inbox_object.created_at %}
+{% endif %}
+    <div class="actor-action">
+        <a href="{{ admin_profile_url }}?actor_id={{ inbox_object.actor.ap_id }}">
+            {% if with_icon %}{{ tiny_actor_icon(inbox_object.actor) }}{% endif %} {{ inbox_object.actor.display_name | clean_html(inbox_object.actor) | safe }}
+        </a> {{ text }}
+        <span title="{{ timestamp.isoformat() }}">{{ timestamp | timeago }}</span>
+        {% if new_flag %}
+            <span class="new">new</span>
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro actor_box(actor) %}
+<div class="actor-box h-card p-author">
+    <div class="icon-box">
+        <img src="{{ actor.resized_icon_url }}" alt="{{ actor.display_name }}'s avatar" class="actor-icon u-photo" loading="lazy">
+    </div>
+    <a href="{{ actor.url }}" class="u-url">
+        <div><strong>{{ actor.display_name | clean_html(actor) | safe  }}</strong></div>
+        <div class="actor-handle p-name">{{ actor.handle }}</div>
+    </a>
+</div>
+{% endmacro %}
+
+{% macro actor_details(actor) %}
+{% if actor.summary %}
+    <div class="p-note">
+        {{ actor.summary | clean_html(actor) | safe }}
+    </div>
+{% endif %}
+
+{% if actor.attachments %}
+<div id="profile-props">
+    {% for prop in actor.attachments %}
+        <dl>
+            {% if prop.type == "PropertyValue" %}
+            <dt class="muted" title="{{ prop.name }}">{{ prop.name }}</dt>
+            <dd>{{ prop.value | clean_html(actor) | safe }}</dd>
+            {% endif %}
+        </dl>
+    {% endfor %}
+</div>
+{% endif %}
+{% endmacro %}
+
+{% macro display_actor(request, csrf_token, is_admin, actor, actors_metadata={}, with_details=False, pending_incoming_follow_notif=None) %}
+{% set metadata = actors_metadata.get(actor.ap_id) %}
+{{ actor_box(actor) }}
+{% if is_admin and metadata %}
+<div>
+    <nav class="flexbox actor-metadata" hx-boost="true" hx-indicator="body">
+        <ul>
+            {% if metadata.has_blocked_local_actor %}
+                <li>blocked you</li>
+            {% endif %}
+            {% if metadata.is_following %}
+                <li>already following</li>
+                <li>{{ admin_buttons.admin_undo_button(request, csrf_token, metadata.outbox_follow_ap_id, "unfollow")}}</li>
+                {% if not with_details %}
+                    <li>{{ admin_buttons.admin_profile_button(request, csrf_token, actor.ap_id) }}</li>
+                {% endif %}
+            {% elif metadata.is_follow_request_sent %}
+                {% if metadata.is_follow_request_rejected %}
+                    <li>follow request rejected</li>
+                    {% if not metadata.has_blocked_local_actor %}
+                        <li>{{ admin_buttons.admin_follow_button(request, csrf_token, actor) }}</li>
+                    {% endif %}
+                {% else %}
+                    <li>follow request sent</li>
+                    <li>{{ admin_buttons.admin_undo_button(request, csrf_token, metadata.outbox_follow_ap_id, "undo follow") }}</li>
+                {% endif %}
+            {% elif not actor.moved_to %}
+                <li>{{ admin_buttons.admin_follow_button(request, csrf_token, actor) }}</li>
+            {% endif %}
+            {% if metadata.is_follower %}
+                <li>follows you</li>
+            {% endif %}
+          </ul>
+          <ul>
+            {% if actor.is_from_db and not with_details and not metadata.is_following %}
+                <li>{{ admin_buttons.admin_profile_button(request, csrf_token, actor.ap_id) }}</li>
+            {% endif %}
+            {% if actor.moved_to %}
+            <li>has moved to {% if metadata.moved_to %}<a href="{{ request.url_for("admin_profile") }}?actor_id={{ actor.moved_to }}">{{ metadata.moved_to.handle }}</a>{% else %}<a href="{{ request.url_for("get_lookup") }}?query={{ actor.moved_to }}">{{ actor.moved_to }}</a>{% endif %}</li>
+            {% endif %}
+            {% if actor.is_from_db %}
+                {% if actor.is_blocked %}
+                    <li>blocked</li>
+                    <li>{{ admin_buttons.admin_unblock_button(request, csrf_token, actor) }}</li>
+                {% else %}
+                    <li>{{ admin_buttons.admin_block_button(request, csrf_token, actor) }}</li>
+                {% endif %}
+            {% endif %}
+                <li>{{ admin_buttons.admin_dm_button(request, csrf_token, actor.handle) }}</li>
+                <li>{{ admin_buttons.admin_mention_button(request, csrf_token, actor.handle) }}</li>
+            {% if pending_incoming_follow_notif %}
+                {% if not pending_incoming_follow_notif.is_accepted and not pending_incoming_follow_notif.is_rejected %}
+                    <li>
+                        {{ admin_buttons.admin_accept_incoming_follow_button(request, csrf_token, pending_incoming_follow_notif) }}
+                    </li>
+                    <li>
+                        {{ admin_buttons.admin_reject_incoming_follow_button(request, csrf_token, pending_incoming_follow_notif) }}
+                    </li>
+                {% elif pending_incoming_follow_notif.is_accepted %}
+                    <li>accepted</li>
+                {% else %}
+                    <li>rejected</li>
+                {% endif %}
+            {% endif %}
+            {% if actor.are_announces_hidden_from_stream %}
+                <li>{{ admin_buttons.admin_show_shares_button(request, csrf_token, actor) }}</li>
+            {% else %}
+                <li>{{ admin_buttons.admin_hide_shares_button(request, csrf_token, actor) }}</li>
+            {% endif %}
+            {% if with_details %}
+                <li><a href="{{ actor.url }}" class="label-btn">remote profile</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endif %}
+
+{% if with_details %}
+{{ actor_details(actor) }}
+{% endif %}
+{% endmacro %}

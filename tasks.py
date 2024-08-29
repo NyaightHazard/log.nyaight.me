@@ -61,14 +61,14 @@ def migrate_db(ctx):
 def autoformat(ctx):
     # type: (Context) -> None
     run("black .", echo=True)
-    run("isort -sl .", echo=True)
+    run("isort --sl .", echo=True)
 
 
 @task
 def lint(ctx):
     # type: (Context) -> None
     run("black --check .", echo=True)
-    run("isort -sl --check-only .", echo=True)
+    run("isort --sl --check-only .", echo=True)
     run("flake8 .", echo=True)
     run("mypy .", echo=True)
 

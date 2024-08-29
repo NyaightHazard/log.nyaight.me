@@ -101,9 +101,9 @@ def build_note_object(
     from_remote_actor: actor.RemoteActor | models.Actor,
     outbox_public_id: str | None = None,
     content: str = "Hello",
-    to: list[str] = None,
-    cc: list[str] = None,
-    tags: list[ap.RawObject] = None,
+    to: list[str] | None = None,
+    cc: list[str] | None = None,
+    tags: list[ap.RawObject] | None = None,
     in_reply_to: str | None = None,
 ) -> ap.RawObject:
     published = now().replace(microsecond=0).isoformat().replace("+00:00", "Z")

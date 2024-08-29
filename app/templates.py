@@ -105,13 +105,15 @@ async def render_template(
             "csrf_token": generate_csrf_token(),
             "highlight_css": HIGHLIGHT_CSS,
             "visibility_enum": ap.VisibilityEnum,
-            "notifications_count": await db_session.scalar(
-                select(func.count(models.Notification.id)).where(
-                    models.Notification.is_new.is_(True)
+            "notifications_count": (
+                await db_session.scalar(
+                    select(func.count(models.Notification.id)).where(
+                        models.Notification.is_new.is_(True)
+                    )
                 )
-            )
-            if is_admin
-            else 0,
+                if is_admin
+                else 0
+            ),
             "articles_count": await db_session.scalar(
                 select(func.count(models.OutboxObject.id)).where(
                     models.OutboxObject.visibility == ap.VisibilityEnum.PUBLIC,
@@ -138,7 +140,7 @@ async def render_template(
 
 
 # HTML/templates helper
-ALLOWED_TAGS = [
+ALLOWED_TAGS = {
     "a",
     "abbr",
     "acronym",
@@ -177,7 +179,7 @@ ALLOWED_TAGS = [
     "img",
     "div",
     "span",
-]
+}
 
 ALLOWED_CSS_CLASSES = [
     # microformats

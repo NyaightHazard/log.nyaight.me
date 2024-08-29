@@ -259,14 +259,16 @@ class OutboxObject(Base, BaseObject):
                         "width": attachment.upload.width,
                         "height": attachment.upload.height,
                         "proxiedUrl": url,
-                        "resizedUrl": BASE_URL
-                        + (
-                            "/attachments/thumbnails/"
-                            f"{attachment.upload.content_hash}"
-                            f"/{attachment.filename}"
-                        )
-                        if attachment.upload.has_thumbnail
-                        else None,
+                        "resizedUrl": (
+                            BASE_URL
+                            + (
+                                "/attachments/thumbnails/"
+                                f"{attachment.upload.content_hash}"
+                                f"/{attachment.filename}"
+                            )
+                            if attachment.upload.has_thumbnail
+                            else None
+                        ),
                     }
                 )
             )

@@ -1,4 +1,5 @@
 """Actions related to the AP inbox/outbox."""
+
 import datetime
 import emoji
 import uuid
@@ -630,7 +631,7 @@ async def send_create(
             context = in_reply_to_object.ap_context
             conversation = in_reply_to_object.ap_context
 
-    for (upload, filename, alt_text) in uploads:
+    for upload, filename, alt_text in uploads:
         attachments.append(upload_to_attachment(upload, filename, alt_text))
 
     to = []
@@ -725,7 +726,7 @@ async def send_create(
             )
             db_session.add(tagged_object)
 
-    for (upload, filename, alt) in uploads:
+    for upload, filename, alt in uploads:
         outbox_object_attachment = models.OutboxObjectAttachment(
             filename=filename,
             alt=alt,
@@ -2417,12 +2418,12 @@ async def save_to_inbox(
         ap_published_at=ap_published_at,
         ap_object=activity_ro.ap_object,
         visibility=activity_ro.visibility,
-        relates_to_inbox_object_id=relates_to_inbox_object.id
-        if relates_to_inbox_object
-        else None,
-        relates_to_outbox_object_id=relates_to_outbox_object.id
-        if relates_to_outbox_object
-        else None,
+        relates_to_inbox_object_id=(
+            relates_to_inbox_object.id if relates_to_inbox_object else None
+        ),
+        relates_to_outbox_object_id=(
+            relates_to_outbox_object.id if relates_to_outbox_object else None
+        ),
         activity_object_ap_id=activity_ro.activity_object_ap_id,
         is_hidden_from_stream=True,
     )
@@ -2680,17 +2681,26 @@ async def get_replies_tree(
     if requested_object.conversation is None:
         tree_nodes = [requested_object]
     else:
+        logger.info(f"Requested conversation: '{requested_object.conversation}'")
+
         allowed_visibility = [ap.VisibilityEnum.PUBLIC, ap.VisibilityEnum.UNLISTED]
         if is_current_user_admin:
             allowed_visibility = list(ap.VisibilityEnum)
+        logger.info(f"Allowed visibility: {allowed_visibility}")
 
         tree_nodes.extend(
             (
                 await db_session.scalars(
                     select(models.InboxObject)
                     .where(
-                        models.InboxObject.conversation
-                        == requested_object.conversation,
+                        (
+                            models.InboxObject.conversation
+                            == requested_object.conversation
+                        )
+                        | (
+                            models.InboxObject.ap_context
+                            == requested_object.conversation
+                        ),
                         models.InboxObject.ap_type.in_(
                             ["Note", "Page", "Article", "Question"]
                         ),
@@ -2703,6 +2713,7 @@ async def get_replies_tree(
             .unique()
             .all()
         )
+
         tree_nodes.extend(
             (
                 await db_session.scalars(
@@ -2729,7 +2740,7 @@ async def get_replies_tree(
     nodes_by_in_reply_to = defaultdict(list)
     for node in tree_nodes:
         nodes_by_in_reply_to[node.in_reply_to].append(node)
-    logger.info(nodes_by_in_reply_to)
+    logger.info(f"Nodes in reply to: {nodes_by_in_reply_to}")
 
     if len(nodes_by_in_reply_to.get(None, [])) > 1:
         raise ValueError(f"Invalid replies tree: {[n.ap_object for n in tree_nodes]}")

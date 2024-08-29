@@ -1,11 +1,12 @@
 <header id="header">
 
 <div class="h-card p-author">
-<data class="u-photo" value="{{ local_actor.icon_url }}"></data>
+<data class="u-photo" value="{{ local_actor.icon_url }}"><img src="{{ local_actor.icon_url }}"></data>
 <a href="{{ local_actor.url }}" class="u-url u-uid no-hover title">
 	<span class="name">{{ local_actor.name }}</span>
 	<span class="p-name handle">{{ local_actor.handle }}</span>
 </a>
+<a class="label-btn follow" href="{{ local_actor.url }}remote_follow">Follow</a>
 
 <div class="p-note summary">
 {{ local_actor.summary | safe }}
@@ -35,14 +36,14 @@
 {% endmacro %}
 
 <div class="public-top-menu">
-<nav class="flexbox">
+<nav class="flexbox" hx-boost="true" hx-indicator="body">
     <ul>
         {% if NAVBAR_ITEMS.INDEX_NAVBAR_ITEM %}
         <li>{{ navbar_item_link(NAVBAR_ITEMS.INDEX_NAVBAR_ITEM) }}</li>
         {% endif %}
         <li>{{ header_link("index", "Notes") }}</li>
         {% if articles_count %}
-            <li>{{ header_link("articles", "Articles") }}</li>
+        <li>{{ header_link("articles", "Articles") }} <span class="counter">{{ articles_count }}</span></li>
         {% endif %}
         {% if not HIDES_FOLLOWERS or is_admin %}
         <li>{{ header_link("followers", "Followers") }} <span class="counter">{{ followers_count }}</span></li>
@@ -50,7 +51,6 @@
         {% if not HIDES_FOLLOWING or is_admin %}
         <li>{{ header_link("following", "Following") }} <span class="counter">{{ following_count }}</span></li>
         {% endif %}
-        <li>{{ header_link("get_remote_follow", "Remote follow") }}</li>
         {% for navbar_item in NAVBAR_ITEMS.EXTRA_NAVBAR_ITEMS %}
             {{ navbar_item_link(navbar_item) }}
         {% endfor %}

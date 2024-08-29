@@ -19,17 +19,18 @@ from app.indieauth import verify_access_token
 router = APIRouter()
 
 
-@router.get("/micropub")
+@router.get("/micropub", response_model=None)
 async def micropub_endpoint(
     request: Request,
     access_token_info: AccessTokenInfo = Depends(verify_access_token),
     db_session: AsyncSession = Depends(get_db_session),
 ) -> dict[str, Any] | JSONResponse:
-    if request.query_params.get("q") == "config":
+    q = request.query_params.get("q")
+    url = request.query_params.get("url")
+    if q == "config":
         return {}
 
-    elif request.query_params.get("q") == "source":
-        url = request.query_params.get("url")
+    elif q == "source" and url is not None:
         outbox_object = await get_outbox_object_by_ap_id(db_session, url)
         if not outbox_object:
             return JSONResponse(
@@ -64,7 +65,7 @@ def _prop_get(dat: dict[str, Any], key: str) -> str:
         return val
 
 
-@router.post("/micropub")
+@router.post("/micropub", response_model=None)
 async def post_micropub_endpoint(
     request: Request,
     access_token_info: AccessTokenInfo = Depends(verify_access_token),
@@ -83,7 +84,7 @@ async def post_micropub_endpoint(
     if "action" in form_data:
         if form_data["action"] in ["delete", "update"]:
             outbox_object = await get_outbox_object_by_ap_id(
-                db_session, form_data["url"]
+                db_session, str(form_data["url"])
             )
             if not outbox_object:
                 return JSONResponse(
@@ -129,7 +130,7 @@ async def post_micropub_endpoint(
     else:
         h = "entry"
         if "h" in form_data:
-            h = form_data["h"]
+            h = str(form_data["h"])
         entry_type = f"h-{h}"
 
     logger.info(f"Creating {entry_type=} with {access_token_info=}")
@@ -148,7 +149,7 @@ async def post_micropub_endpoint(
     if is_json:
         content = _prop_get(form_data["properties"], "content")  # type: ignore
     else:
-        content = form_data["content"]
+        content = str(form_data["content"])
 
     public_id, _ = await send_create(
         db_session,
@@ -163,6 +164,6 @@ async def post_micropub_endpoint(
         content={},
         status_code=201,
         headers={
-            "Location": request.url_for("outbox_by_public_id", public_id=public_id)
+            "Location": str(request.url_for("outbox_by_public_id", public_id=public_id))
         },
     )

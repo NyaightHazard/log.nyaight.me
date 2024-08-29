@@ -15,7 +15,7 @@ def test_admin_endpoints_are_authenticated(client: TestClient) -> None:
             continue
 
         for method in route.methods:  # type: ignore
-            resp = client.request(method, route.path)
+            resp = client.request(method, route.path, follow_redirects=False)
 
             # Admin routes should redirect to the login page
             assert resp.status_code == 302, f"{method} {route.path} is unauthenticated"

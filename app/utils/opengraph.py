@@ -50,7 +50,7 @@ def _scrap_og_meta(url: str, html: str) -> OpenGraphMeta | None:
         "description": None,
         "site_name": urlparse(url).hostname,
     }
-    for field in OpenGraphMeta.__fields__.keys():
+    for field in OpenGraphMeta.model_fields.keys():
         og_field = f"og:{field}"
         if ogs.get(og_field):
             raw[field] = ogs.get(og_field, None)

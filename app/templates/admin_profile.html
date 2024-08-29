@@ -1,18 +1,26 @@
 {%- import "utils.html" as utils with context -%}
+{%- import "components/actor.html" as actor_component -%}
 
 {% block head %}
+<link rel="manifest" href="/static/pwa.webmanifest" />
 <title>{{ local_actor.display_name }} - {{ actor.display_name }}</title>
 {% endblock %}
 
 {% extends "layout.html" %}
 {% block content %}
-    {{ utils.display_actor(actor, actors_metadata, with_details=True) }}
+    <div class="ap-object">
+      {{ actor_component.display_actor(request, csrf_token, is_admin, actor, actors_metadata, with_details=True) }}
+    </div>
     {% for inbox_object in inbox_objects %}
         {% if inbox_object.ap_type == "Announce" %}
-            {{ utils.actor_action(inbox_object, "shared", with_icon=True) }}
-            {{ utils.display_object(inbox_object.relates_to_anybox_object) }}
+            <div class="h-entry" id="{{ inbox_object.permalink_id }}">
+                {{ actor_component.actor_action(url_for("admin_profile"), inbox_object, "shared", with_icon=True) }}
+                <div class="h-cite u-repost-of">
+                    {{ utils.display_object(inbox_object.relates_to_anybox_object, is_h_entry=False) }}
+                </div>
+            </div>
         {% else %}
-                {{ utils.display_object(inbox_object) }}
+            {{ utils.display_object(inbox_object) }}
         {% endif %}
     {% endfor %}
 

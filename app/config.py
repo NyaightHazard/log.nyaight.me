@@ -112,7 +112,7 @@ class Config(pydantic.BaseModel):
     manually_approves_followers: bool = False
     privacy_replace: list[_PrivacyReplace] | None = None
     metadata: list[_ProfileMetadata] | None = None
-    code_highlighting_theme = "friendly_grayscale"
+    code_highlighting_theme: str = "friendly_grayscale"
     blocked_servers: list[_BlockedServer] = []
     custom_footer: str | None = None
     emoji: str | None = None

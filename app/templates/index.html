@@ -1,4 +1,5 @@
 {%- import "utils.html" as utils with context -%}
+{%- import "components/actor.html" as actor_component -%}
 {% extends "layout.html" %}
 
 {% block head %}
@@ -30,7 +31,7 @@
     {{ utils.display_object(outbox_object) }}
     {% elif outbox_object.ap_type == "Announce" %}
     <div class="h-entry" id="{{ outbox_object.permalink_id }}">
-        <div class="shared-header"><strong><a class="p-author h-card" href="{{ local_actor.url }}">{{ utils.display_tiny_actor_icon(local_actor) }}  {{ local_actor.display_name | clean_html(local_actor) | safe }}</a></strong> shared <span title="{{ outbox_object.ap_published_at.isoformat() }}">{{ outbox_object.ap_published_at | timeago }}</span></div>
+        <div class="shared-header"><strong><a class="p-author h-card" href="{{ local_actor.url }}">{{ actor_component.tiny_actor_icon(local_actor) }}  {{ local_actor.display_name | clean_html(local_actor) | safe }}</a></strong> shared <span title="{{ outbox_object.ap_published_at.isoformat() }}">{{ outbox_object.ap_published_at | timeago }}</span></div>
         <div class="h-cite u-repost-of">
             {{ utils.display_object(outbox_object.relates_to_anybox_object, is_h_entry=False) }}
         </div>
@@ -40,7 +41,7 @@
     </div>
 
     {% if has_previous_page or has_next_page %}
-        <div class="box">
+        <div class="box" hx-boost="true" hx-indicator="body">
             {% if has_previous_page %}
             <a href="{{ url_for("index") }}?page={{ current_page - 1 }}">Previous</a>
             {% endif %}

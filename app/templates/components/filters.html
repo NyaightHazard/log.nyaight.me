@@ -1,0 +1,18 @@
+{% macro filters(current_path, filter_by=None) %}
+<nav class="flexbox box" hx-boost="true" hx-indicator="body">
+<ul>
+    <li>Filter by</li>
+{% for ap_type in ["Note", "Article", "Page", "Question", "Like", "Announce", "Follow"] %}
+    <li><a href="{{ current_path }}?filter_by={{ ap_type }}" {% if filter_by == ap_type %}class="active"{% endif %}>
+        {{ ap_type }}
+        </a>
+    </li>
+{% endfor %}
+{% if filter_by %}
+    <li>
+        <a href="{{ current_path }}">Reset filter</a>
+    </li>
+{% endif %}
+</ul>
+</nav>
+{% endmacro %}
