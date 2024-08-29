@@ -137,7 +137,7 @@ class Config(pydantic.BaseModel):
     disabled_notifications: list[str] = []
 
     # extension for CUS
-    local_format = "en_US"
+    local_format: str = "en_US"
     local_utc: int = 0
     discoverable: bool = True
 
@@ -228,7 +228,8 @@ _load_emojis(ROOT_DIR, BASE_URL)
 CODE_HIGHLIGHTING_THEME = CONFIG.code_highlighting_theme
 
 # vals from CUS
-humanize.i18n.activate(CONFIG.local_format)
+if CONFIG.local_format!="en_US":
+    humanize.i18n.activate(CONFIG.local_format)
 LOCAL_TZ = timezone(timedelta(hours=CONFIG.local_utc))
 DISCOVERABLE = CONFIG.discoverable
 

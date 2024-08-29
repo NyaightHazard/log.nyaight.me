@@ -69,6 +69,10 @@
     {{ hidden_inputs.embed_redirect_url(request, permalink_id) }}
     <input type="hidden" name="ap_object_id" value="{{ ap_object_id }}">
     <input type="submit" value="like">
+    <!-- #!CUS reaction support -->
+    <input type="name" name="reaction" placeholder="reaction" size="10"
+        reaction-deck="🤔,👍,🎉,goose_honk.png,custom_emoji_file_name.png">
+    <script src="{{ BASE_URL }}/static/reaction.js?v={{ JS_HASH }}"></script>
 </form>
 {% endmacro %}
 
