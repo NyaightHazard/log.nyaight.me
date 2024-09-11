@@ -1,0 +1,48 @@
+{%- import "utils.html" as utils with context -%}
+{% extends "layout.html" %}
+
+{% block head %}
+<title>{{ local_actor.display_name }} - New</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="box">
+
+<form class="form admin-new" action="{{ request.url_for("admin_actions_edit_text", public_id=public_id) }}" enctype="multipart/form-data" method="POST">
+    {{ utils.embed_csrf_token() }}
+    {{ utils.embed_redirect_url() }}
+
+    {% if outbox_object.ap_type == "Article" %}
+    <p>
+        <input type="text" class="width-95" name="name" placeholder="Title" value="{{ outbox_object.name }}">
+    </p>
+    {% endif %}
+
+    {% if False %}
+    {% for emoji in emojis %}
+    <span class="ji">{{ emoji | emojify(True) | safe }}</span>
+    {% endfor %}
+    {% for emoji in custom_emojis %}
+    <span class="ji"><img src="{{ emoji.icon.url }}" alt="{{ emoji.name }}" title="{{ emoji.name }}" class="custom-emoji"></span>
+    {% endfor %}
+    {% endif %}
+
+    <textarea name="content" rows="10" cols="50" autofocus="autofocus" designMode="on" placeholder="">{{ content }}</textarea>
+
+    {% if False %}
+    <p>
+    <input type="text" name="content_warning" placeholder="content warning (will mark the post as sensitive)"{% if content_warning %} value="{{ content_warning }}"{% endif %} class="width-95">
+    </p>
+    <p>
+        <input type="checkbox" name="is_sensitive" id="is_sensitive"> <label for="is_sensitive">Mark attachment(s) as sensitive</label>
+    </p>
+    {% endif %}
+
+    <p>
+        <input type="submit" value="Submit">
+    </p>
+</form>
+</div>
+<script src="{{ BASE_URL }}/static/new.js?v={{ JS_HASH }}"></script>
+{% endblock %}

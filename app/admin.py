@@ -1230,6 +1230,82 @@ async def admin_actions_new(
     )
 
 
+@router.get("/edit_text/{public_id}", response_model=None)
+async def admin_edit_text(
+    request: Request,
+    public_id: str,
+    db_session: AsyncSession = Depends(get_db_session),
+) -> templates.TemplateResponse | RedirectResponse:
+    maybe_object = (
+        (
+            await db_session.execute(
+                select(models.OutboxObject)
+                .where(
+                    models.OutboxObject.public_id == public_id,
+                    models.OutboxObject.is_deleted.is_(False),
+                )
+            )
+        )
+        .unique()
+        .scalar_one_or_none()
+    )
+    if not maybe_object:
+        raise HTTPException(status_code=404)
+
+    return await templates.render_template(
+        db_session,
+        request,
+        "admin_edit_text.html",
+        {
+            "public_id": public_id,
+            "content": maybe_object.source,
+            "outbox_object": maybe_object,
+        },
+    )
+
+
+@router.post("/actions/edit_text/{public_id}", response_model=None)
+async def admin_actions_edit_text(
+    request: Request,
+    public_id: str,
+    content: str | None = Form(None),
+    name: str | None = Form(None),
+    csrf_check: None = Depends(verify_csrf_token),
+    db_session: AsyncSession = Depends(get_db_session),
+) -> RedirectResponse:
+    if not content:
+        raise HTTPException(status_code=422, detail="Error: objec must have a content")
+
+    maybe_object = (
+        (
+            await db_session.execute(
+                select(models.OutboxObject)
+                .where(
+                    models.OutboxObject.public_id == public_id,
+                    models.OutboxObject.is_deleted.is_(False),
+                )
+            )
+        )
+        .unique()
+        .scalar_one_or_none()
+    )
+    if not maybe_object:
+        raise HTTPException(status_code=404)
+
+    public_id = await boxes.send_update(
+        db_session,
+        ap_id=maybe_object.ap_id,
+        source=content,
+        name=name,
+    )
+
+    return RedirectResponse(
+        request.url_for("outbox_by_public_id", public_id=public_id),
+        status_code=302,
+    )
+
+
+
 @router.post("/actions/vote", response_model=None)
 async def admin_actions_vote(
     request: Request,

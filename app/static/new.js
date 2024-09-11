@@ -34,22 +34,81 @@ for (var i = 0; i < items.length; i++) {
 // Add new input text dynamically to allow setting an alt text on attachments
 var files = document.getElementById("files");
 var alts = document.getElementById("alts");
-files.addEventListener("change", function(e) {
-    // Reset the div content
-    alts.innerHTML = "";
+if (files != null) {
+    files.addEventListener("change", function(e) {
+        // Reset the div content
+        alts.innerHTML = "";
 
-    // Add an input for each files
-    for (var i = 0; i < e.target.files.length; i++) {
-        var p = document.createElement("p");
-        var altInput = document.createElement("input");
-        altInput.setAttribute("type", "text");
-        altInput.setAttribute("name", "alt_" + e.target.files[i].name);
-        altInput.setAttribute("placeholder", "Alt text for " + e.target.files[i].name);
-        altInput.setAttribute("style", "width:95%;")
-        p.appendChild(altInput);
-        alts.appendChild(p);
-    }
-});
+        // Add an input for each files
+        for (var i = 0; i < e.target.files.length; i++) {
+            var p = document.createElement("p");
+            var altInput = document.createElement("input");
+            altInput.setAttribute("type", "text");
+            altInput.setAttribute("name", "alt_" + e.target.files[i].name);
+            altInput.setAttribute("placeholder", "Alt text for " + e.target.files[i].name);
+            altInput.setAttribute("style", "width:95%;")
+            p.appendChild(altInput);
+            alts.appendChild(p);
+        }
+    });
+}
 // Focus at the end of the textarea
 ta.setSelectionRange(ta.value.length, ta.value.length);
 ta.focus();
+
+
+// Ctrl+Vで画像添付
+document.addEventListener('paste', async (event) => {
+    const items = event.clipboardData.items;
+    const fileInput = document.getElementById('files');
+    const dataTransfer = new DataTransfer();
+
+    let previews = document.getElementById("files-preview");
+    if (previews == null) {
+        previews = document.createElement("div");
+        previews.id = "files-preview";
+        previews.style.display = "flex";
+        previews.style.flexWrap = "wrap";
+        previews.style.gap = "5px";
+        fileInput.parentNode.appendChild(previews);
+    }
+
+    for (const existingFile of fileInput.files) {
+        dataTransfer.items.add(existingFile);
+    }
+
+    var added = false;
+    for (const item of items) {
+        if (item.type.startsWith('image/')) {
+            const file = item.getAsFile();
+            if (!file) continue;
+            added = true;
+
+            dataTransfer.items.add(file);
+
+            const preview = document.createElement('img');
+            preview.style.maxWidth = '200px';
+            preview.style.maxHeight = '200px';
+            preview.style.objectFit = 'contain';
+            preview.style.margin = "2px";
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                preview.src = e.target.result;
+                previews.appendChild(preview);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    if (added) {
+        fileInput.files = dataTransfer.files;
+    }
+});
+
+// Ctrl+Enterで投稿
+ta.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.key === 'Enter') {
+        event.preventDefault();
+        document.querySelector('.admin-new').submit();
+    }
+});
