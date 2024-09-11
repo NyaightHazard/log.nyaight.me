@@ -310,8 +310,9 @@ footer {
     border: 1px solid $background;
     padding: .4em .5em .25em .5em;
     cursor: pointer;
-    text-transform: uppercase;
-    box-shadow: #777 0 2px 3px;
+    &:hover {
+        border: 1px solid $form-text-color;
+    }
 }
 
 .show-sensitive-btn, .show-more-btn, .label-btn, input[type=submit], button[type=submit] {
