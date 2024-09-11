@@ -270,6 +270,9 @@
     <ul>
         {% if object.is_from_outbox %}
             <li>
+                {{ admin_edit_button(object) }}
+            </li>
+            <li>
                 {{ admin_buttons.admin_delete_button(request, csrf_token, object) }}
             </li>
 

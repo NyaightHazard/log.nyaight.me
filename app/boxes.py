@@ -839,6 +839,7 @@ async def send_update(
     db_session: AsyncSession,
     ap_id: str,
     source: str,
+    name: str | None = None,
 ) -> str:
     outbox_object = await get_outbox_object_by_ap_id(db_session, ap_id)
     if not outbox_object:
@@ -871,17 +872,32 @@ async def send_update(
         "context": outbox_object.ap_context,
         "conversation": outbox_object.ap_context,
         "url": outbox_object.url,
-        "tag": tags,
+        "tag": dedup_tags(tags),
         "summary": outbox_object.summary,
         "inReplyTo": outbox_object.in_reply_to,
         "sensitive": outbox_object.sensitive,
         "attachment": outbox_object.ap_object["attachment"],
         "updated": updated,
     }
+    if outbox_object.ap_type == "Article" and name:
+        note["name"] = name
 
     outbox_object.ap_object = note
     outbox_object.source = source
     outbox_object.revisions = revisions
+
+    await db_session.execute(
+        delete(models.TaggedOutboxObject).where(
+            models.TaggedOutboxObject.outbox_object_id == outbox_object.id
+        )
+    )
+    for tag in tags:
+        if tag["type"] == "Hashtag":
+            tagged_object = models.TaggedOutboxObject(
+                tag=tag["name"][1:].lower(),
+                outbox_object_id=outbox_object.id,
+            )
+            db_session.add(tagged_object)
 
     recipients = await _compute_recipients(db_session, note)
     for rcp in recipients:
