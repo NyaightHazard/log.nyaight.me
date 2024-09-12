@@ -305,13 +305,13 @@ footer {
     font-size: $font-size;
     line-height: $line-height;
     font-family: $font-stack;
-    background: $form-background-color;
-    color: $form-text-color;
+    background: $nav-button-background-color;
+    color: $nav-button-text-color;
     border: 1px solid $background;
     padding: .4em .5em .25em .5em;
     cursor: pointer;
     &:hover {
-        border: 1px solid $form-text-color;
+        border: 1px solid $nav-button-text-color;
     }
 }
 
